@@ -34,4 +34,4 @@ if ! [[ $INPUT =~ $MATCH ]]
 else 
    exit 
 fi
-exec ssh "$DET"
+exec ssh $DET
