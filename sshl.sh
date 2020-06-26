@@ -29,4 +29,4 @@ read -r INPUT
 #var to use to make sure the INPUT is not a letter
 MATCH="^[abcdefghijklmnopqrstuvwxyz]$/i"
  ! [[ $INPUT =~ $MATCH ]]
-        DET=$(sed --regex -n "$INPUT"p "$FILE" | sed --regex -e 's/;\s*.*#.*// g') && echo "$MESSAGE $DET $@" && ssh $DET $@;
+        DET=$(sed --regex -n "$INPUT"p "$FILE" | sed --regex -e 's/;\s*.*#.*// g') && echo "$MESSAGE $DET" "$@" && ssh $DET $@;
