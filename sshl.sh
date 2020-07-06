@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 ## Author: Qurtin
 # This is a small script to read from a file so that I don't have to copy-paste the address of ssh servers....so I guess I am addicted to SSH
@@ -21,12 +21,9 @@
 FILE="$HOME/.ssh_hosters";
 MESSAGE="Connecting to SSH server with command: ssh";
 
-#while loop which taking in the FILE var and prints to the screen
+cat -n $FILE;
+read -r INPUT;
 
-cat -n $FILE
-read -r INPUT
-
-#var to use to make sure the INPUT is not a letter
-MATCH="^[abcdefghijklmnopqrstuvwxyz]$/i"
- ! [[ $INPUT =~ $MATCH ]]
-        DET=$(sed --regex -n "$INPUT"p "$FILE" | sed --regex -e 's/;\s*.*#.*// g') && echo "$MESSAGE $DET" "$@" && ssh $DET $@;
+DET=$(sed --regex -n "$INPUT"p "$FILE" | sed --regex -e 's/;\s*.*#.*// g');
+echo "$MESSAGE $DET" "$@";
+ssh $@ $DET;
