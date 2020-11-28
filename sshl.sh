@@ -24,6 +24,6 @@ MESSAGE="Connecting to SSH server with command: ssh";
 cat -n $FILE;
 read -r INPUT;
 
-DET=$(sed --regex -n "$INPUT"p "$FILE" | sed --regex -e 's/;\s*.*#.*// g');
+DET=$(sed -n "$INPUT"p "$FILE" | sed 's/;\s*#.*// g');
 echo "$MESSAGE $DET" "$@";
 ssh $@ $DET;
