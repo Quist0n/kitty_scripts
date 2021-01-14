@@ -3,7 +3,7 @@
 MODE=$1;
 NAME="abduco_manager"
 CONFIG_FILE="$HOME/.$NAME.conf";
-HELP_MESSAGE="Usage: $NAME [-l|-h]\n\tabduco_manger.sh -s SESSION_NAME SSH_OPTIONS\n\t$NAME -a SESSION_NAME\n\tMODES:\n\t\t--ssh | -s, Use abduco to connect via SSH. Using ssh_script variable in $CONFIG_FILE\n\t\t--help | -h, Print this help screen, also comes up if a mode is not specified.\n\t\t--list | -l, List all abduco sessions.\n\t\t--attach | -a, Attach to an existing session";
+HELP_MESSAGE="Usage: $NAME [-l|-h]\n\t$NAME.sh -s [SESSION_NAME] [SSH_OPTIONS]\n\t$NAME -a [SESSION_NAME]\n\tMODES:\n\t\t--ssh | -s, Use abduco to connect via SSH. Using ssh_script variable in $CONFIG_FILE\n\t\t--help | -h, Print this help screen, also comes up if a mode is not specified.\n\t\t--list | -l, List all abduco sessions.\n\t\t--attach | -a, Attach to an existing session";
 
 if [ -f "$CONFIG_FILE" ]; then
         SSH_SCRIPT=$(grep -E "ssh_script" "$CONFIG_FILE"| sed "s/^.*=//g");
