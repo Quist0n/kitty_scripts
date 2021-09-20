@@ -3,7 +3,19 @@
 
 NAME="abduco_manager"
 CONFIG_FILE="$HOME/.config/$NAME/$NAME.conf";
-HELP_MESSAGE="Usage: $NAME [-l|-h]\n\t$NAME.sh -s [SESSION_NAME] [SSH_OPTIONS]\n\t$NAME -a [SESSION_NAME]\n\tMODES:\n\t\t--ssh | -s, Use abduco to connect via SSH. Using ssh-script variable in $CONFIG_FILE\n\t\t--help | -h, Print this help screen, also comes up if a mode is not specified.\n\t\t--list | -l, List all abduco sessions.\n\t\t--attach | -a, Attach to an existing session\n";
+
+usage() {
+cat <<- _end_help_message
+Usage:  $NAME [-l|-h]
+        $NAME.sh -s [SESSION_NAME] [SSH_OPTIONS]
+        $NAME -a [SESSION_NAME]
+        MODES:
+                --ssh | -s, Use abduco to connect via SSH. Using ssh-script variable in $CONFIG_FILE
+                --help | -h, Print this help screen, also comes up if a mode is not specified.
+                --list | -l, List all abduco sessions.
+                --attach | -a, Attach to an existing session
+_end_help_message
+}
 
 if [ -f "$CONFIG_FILE" ]; then
         SSH_SCRIPT=$( sed "s/^ssh-script=//g" $CONFIG_FILE );
@@ -12,16 +24,10 @@ else
         SSH_SCRIPT="ssh";
 fi
 
-#[ "$MODE" = "--ssh" ] || [ "$MODE" = "-s" ] && exec abduco -c "$2" "$SSH_SCRIPT" ${@:3};
-#[ "$MODE" = "--attach" ] || [ "$MODE" = "-a" ] && exec abduco -a "$2";
-
-#[ "$MODE" = "--help" ] || [ "$MODE" = "-h" ] || [ -z "$MODE" ] && echo -e "$HELP_MESSAGE";
-
-
 while [ "$1" ]; do
         case "$1" in
                 --help | -h)
-                        printf "$HELP_MESSAGE" ; exit 0 ;;
+                        usage ; exit 0 ;;
                 --attach | -a)
                         shift
                         exec abduco -a "$1" ;;
