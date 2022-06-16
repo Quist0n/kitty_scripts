@@ -14,6 +14,8 @@ Usage:  $NAME [-l|-h]
                 --help | -h, Print this help screen, also comes up if a mode is not specified.
                 --list | -l, List all abduco sessions.
                 --attach | -a, Attach to an existing session
+                --create | -c, create a generic session with a name
+                -n, create a generic session with a name but don't attach immediately
 _end_help_message
 }
 
@@ -36,6 +38,10 @@ while [ "$1" ]; do
                         exec abduco -c "$1" "$SSH_SCRIPT" "${@:2}" ;;
                 --list | -l)
                         exec abduco && exit ;;
+                --create | -c)
+                        exec abduco -c "$1" "${@:2}" ;;
+                -n)
+                        exec abduco -n "$1" "${@:2}" ;;
                 *)
                         printf 'Flag does not found. Use --help or -h for usage info\n';
         esac
