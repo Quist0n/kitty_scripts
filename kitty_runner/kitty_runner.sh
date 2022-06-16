@@ -2,9 +2,10 @@
 
 FILE="$XDG_CONFIG_HOME/kitty_runner/presets";
 MESSAGE="Loading preset";
+NUM_SHOWN_ENTRIES=8
 
 dmenu_mode(){
-        DET=$(cat "$FILE" | dmenu -l 5 -i -p "Choose program preset" | sed 's/;\s*#.*// g');
+        DET=$(cat "$FILE" | dmenu -l $NUM_SHOWN_ENTRIES -i -p "Choose program preset" | sed 's/;\s*#.*// g');
         echo "$MESSAGE $DET" "$@";
 }
 
@@ -31,4 +32,3 @@ if [ -z "$DET" ]; then
 else
         $DET $@
 fi
-
