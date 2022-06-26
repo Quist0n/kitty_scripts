@@ -2,7 +2,7 @@
 #Making the config file requires that you specify key-value pairs. E.g ssh-script=<your ssh script>.
 
 NAME="abduco_manager"
-CONFIG_FILE="$HOME/.config/$NAME/$NAME.conf";
+CONFIG_FILE="$XDG_CONFIG_HOME/$NAME/$NAME.conf";
 
 usage() {
 cat <<- _end_help_message
