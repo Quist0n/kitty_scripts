@@ -14,6 +14,7 @@ Usage:  $NAME [-l|-h]
                 --help | -h, Print this help screen, also comes up if a mode is not specified.
                 --list | -l, List all abduco sessions.
                 --attach | -a, Attach to an existing session
+                --create-attach | -A, Attach to an existing session or create and then attach if the session does not exist
                 --create | -c, create a generic session with a name
                 -n, create a generic session with a name but don't attach immediately
 _end_help_message
@@ -33,6 +34,9 @@ while [ "$1" ]; do
                 --attach | -a)
                         shift
                         exec abduco -a "$1" ;;
+                --create-attach | -A)
+                        shift
+                        exec abduco -A "$1" "${@:2}" ;;
                 --ssh | -s)
                         shift
                         exec abduco -c "$1" "$SSH_SCRIPT" "${@:2}" ;;
