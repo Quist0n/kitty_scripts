@@ -2,7 +2,7 @@
 
 PRESET_FILE="$XDG_CONFIG_HOME/kitty_runner/presets";
 MESSAGE="Loading preset";
-MENU_COMMAND="dmenu -l 5 -i"
+MENU_COMMAND="dmenu"
 MODE="normal_mode"
 ARGS=""
 
@@ -11,14 +11,14 @@ err(){
 }
 
 dmenu_mode(){
-        DET=$(cat "$PRESET_FILE" | $MENU_COMMAND | sed 's/;\s*#.*// g');
+        DET=$(cat "$PRESET_FILE" | $MENU_COMMAND | sed 's/;\s*#.*$//');
         echo "$MESSAGE $DET" "$@";
 }
 
 normal_mode(){
         cat -n "$PRESET_FILE";
         read -r INPUT;
-        DET=$(sed -n "$INPUT"p "$PRESET_FILE" | sed 's/;\s*#.*// g');
+        DET=$(sed -n "$INPUT"p "$PRESET_FILE" | sed 's/;\s*#.*$//');
 }
 
 if [ "$1" ]; then
