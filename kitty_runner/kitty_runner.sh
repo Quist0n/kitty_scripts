@@ -1,5 +1,4 @@
 #!/bin/sh
-
 PRESET_FILE="$XDG_CONFIG_HOME/kitty_runner/presets";
 MESSAGE="Loading preset";
 MENU_COMMAND="dmenu"
@@ -53,5 +52,5 @@ $MODE
 if [ -z "$DET" ]; then
         printf "Plese select a preset";
 else
-        $DET $ARGS
+        eval $DET $ARGS;
 fi
