@@ -9,15 +9,17 @@ err(){
         echo "$1"; exit 1
 }
 
+prep(){
+        sed '/^#.*$/d;' "$1"
+}
+
 dmenu_mode(){
-        DET=$(cat "$PRESET_FILE" | $MENU_COMMAND | sed 's/;\s*#.*$//');
+        DET=$(prep "$PRESET_FILE" | $MENU_COMMAND | sed 's/;\s*#.*$//');
         echo "$MESSAGE $DET" "$@";
 }
 
 normal_mode(){
-        cat -n "$PRESET_FILE";
-        read -r INPUT;
-        DET=$(sed -n "$INPUT"p "$PRESET_FILE" | sed 's/;\s*#.*$//');
+        DET=$( prep "$PRESET_FILE" | fzf | sed 's/;\s*#.*$//');
 }
 
 if [ "$1" ]; then
@@ -50,7 +52,7 @@ fi
 echo "Using Presets file: $PRESET_FILE"
 $MODE
 if [ -z "$DET" ]; then
-        printf "Plese select a preset";
+        printf "Please select a preset";
 else
-        eval $DET $ARGS;
+        eval exec $DET $ARGS;
 fi
