@@ -1,7 +1,9 @@
 #!/bin/sh
 PRESET_FILE="$XDG_CONFIG_HOME/kitty_runner/presets";
 MESSAGE="Loading preset";
-MENU_COMMAND="dmenu"
+#Set MENU_COMMAND to something that can read from stdin
+#for lines to select from. This gets set explicitly via cmd args
+MENU_COMMAND=""
 MODE="normal_mode"
 ARGS=""
 
@@ -9,24 +11,34 @@ err(){
         echo "$1"; exit 1
 }
 
-prep(){
+strip_comments(){
         sed '/^\s*#.*$/d;' "$1"
 }
 
+prep(){
+        sed 's/;\s*#.*$//' -
+}
+
 dmenu_mode(){
-        DET=$(prep "$PRESET_FILE" | $MENU_COMMAND | sed 's/;\s*#.*$//');
+        DET=$(strip_comments "$PRESET_FILE" | $MENU_COMMAND | prep );
         echo "$MESSAGE $DET" "$@";
 }
 
+tofi_mode() {
+        DET=$(strip_comments "$PRESET_FILE" | $MENU_COMMAND | prep )
+}
+
 normal_mode(){
-        DET=$( prep "$PRESET_FILE" | fzf | sed 's/;\s*#.*$//');
+        DET=$( strip_comments "$PRESET_FILE" | fzf | prep );
 }
 
 if [ "$1" ]; then
 while [ "$1" ]; do
         case "$1" in
                 --dmenu-mode | -d )
-                        MODE="dmenu_mode"; shift;;
+                        MENU_COMMAND="dmenu" MODE="dmenu_mode"; shift;;
+                --tofi-mode | -t )
+                        MENU_COMMAND="tofi" MODE="tofi_mode"; shift;;
                 --normal-mode | -n )
                         MODE="normal_mode"; shift;;
                 -p | --preset-file )
