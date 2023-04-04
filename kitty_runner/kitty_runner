@@ -66,5 +66,5 @@ $MODE
 if [ -z "$DET" ]; then
         printf "Please select a preset";
 else
-        eval $DET $ARGS;
+        eval exec $DET $ARGS;
 fi
