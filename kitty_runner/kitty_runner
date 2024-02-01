@@ -28,6 +28,10 @@ tofi_mode() {
         DET=$(strip_comments "$PRESET_FILE" | $MENU_COMMAND | prep )
 }
 
+wofi_mode() {
+        DET=$(strip_comments "$PRESET_FILE" | $MENU_COMMAND | prep )
+}
+
 normal_mode(){
         DET=$( strip_comments "$PRESET_FILE" | fzf | prep );
 }
@@ -39,6 +43,8 @@ while [ "$1" ]; do
                         MENU_COMMAND="dmenu" MODE="dmenu_mode"; shift;;
                 --tofi-mode | -t )
                         MENU_COMMAND="tofi" MODE="tofi_mode"; shift;;
+                --wofi-mode | -w )
+                        MENU_COMMAND="wofi --dmenu" MODE="wofi_mode"; shift;;
                 --normal-mode | -n )
                         MODE="normal_mode"; shift;;
                 -p | --preset-file )
