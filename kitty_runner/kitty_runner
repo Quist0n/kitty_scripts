@@ -1,6 +1,8 @@
 #!/bin/sh
 PRESET_FILE="$XDG_CONFIG_HOME/kitty_runner/presets";
+PRESET_BASE_DIR="$XDG_CONFIG_HOME/kitty_runner";
 MESSAGE="Loading preset";
+IS_END_OF_PROCESSED_ARGS=0;
 #Set MENU_COMMAND to something that can read from stdin
 #for lines to select from. This gets set explicitly via cmd args
 MENU_COMMAND=""
@@ -58,10 +60,30 @@ while [ "$1" ]; do
 
                         fi
                         ;;
+                -P | --preset )
+                        shift;
+                        if [ ! -e "$PRESET_BASE_DIR/$1" ]; then
+                                err "Preset $1 not found in $PRESET_BASE_DIR"
+
+                        else
+                                PRESET_FILE="$PRESET_BASE_DIR/$1"
+                                shift
+
+                        fi
+                        ;;
+
+                -- )
+                        IS_END_OF_PROCESSED_ARGS=1;
+                        shift;
+                        ;;
 
                 * )
-                        ARGS="$ARGS $1";
-                        shift;;
+                        if [ "$IS_END_OF_PROCESSED_ARGS" = 1 ]; then
+                                ARGS="$ARGS $1";
+                        fi
+
+                        shift
+                        ;;
 
         esac
 done
@@ -72,5 +94,6 @@ $MODE
 if [ -z "$DET" ]; then
         printf "Please select a preset";
 else
+        echo "Running preset $DET $ARGS"
         eval exec $DET $ARGS;
 fi
