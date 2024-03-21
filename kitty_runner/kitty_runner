@@ -3,6 +3,7 @@ PRESET_FILE="$XDG_CONFIG_HOME/kitty_runner/presets";
 PRESET_BASE_DIR="$XDG_CONFIG_HOME/kitty_runner";
 MESSAGE="Loading preset";
 IS_END_OF_PROCESSED_ARGS=0;
+IS_FORKING=0
 #Set MENU_COMMAND to something that can read from stdin
 #for lines to select from. This gets set explicitly via cmd args
 MENU_COMMAND=""
@@ -72,6 +73,11 @@ while [ "$1" ]; do
                         fi
                         ;;
 
+                -f | --fork )
+                        shift;
+                        IS_FORKING=1
+                        ;;
+
                 -- )
                         IS_END_OF_PROCESSED_ARGS=1;
                         shift;
@@ -95,5 +101,10 @@ if [ -z "$DET" ]; then
         printf "Please select a preset";
 else
         echo "Running preset $DET $ARGS"
-        eval exec $DET $ARGS;
+        if [ "$IS_FORKING" = 0 ]; then
+                eval exec $DET $ARGS;
+        else
+                eval exec setsid -f $DET $ARGS;
+        fi
+
 fi
