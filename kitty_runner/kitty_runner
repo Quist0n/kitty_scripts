@@ -39,6 +39,17 @@ normal_mode(){
         DET=$( strip_comments "$PRESET_FILE" | fzf | prep );
 }
 
+
+run() {
+
+        echo "Running preset $DET $ARGS"
+        if [ "$IS_FORKING" = 0 ]; then
+                        eval exec $DET $ARGS;
+        else
+                        eval exec setsid -f $DET $ARGS;
+        fi
+}
+
 if [ "$1" ]; then
 while [ "$1" ]; do
         case "$1" in
@@ -100,11 +111,5 @@ $MODE
 if [ -z "$DET" ]; then
         printf "Please select a preset";
 else
-        echo "Running preset $DET $ARGS"
-        if [ "$IS_FORKING" = 0 ]; then
-                eval exec $DET $ARGS;
-        else
-                eval exec setsid -f $DET $ARGS;
-        fi
-
+        run
 fi
